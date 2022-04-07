@@ -1,0 +1,32 @@
+
+button {
+    margin: 0;
+    margin-top: 1.5rem;
+    height: 40px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    
+}
+
+.button-primary {
+    background-color: var(--primary);
+    color: white;
+    
+}
+.button-primary:hover {
+    background-color: var(--primary-lighter);
+    
+}
+.button-secondary {
+    background:none;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+}
+.button-secondary:hover {
+    background-color: rgb(240, 240, 240);
+    
+}
+

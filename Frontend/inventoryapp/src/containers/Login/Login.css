@@ -1,0 +1,82 @@
+.container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+.image{
+    height: 100%;
+    width: 60%;
+    background-image: url(../../assets/entrada.jpg); 
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position:center;
+    filter: grayscale(100%);
+    
+}
+.login{
+    margin-top: 2.5rem;
+    height: 100%;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login h1{
+    color: var(--gray-darker);
+    font-weight: 700;
+    padding: 0;
+    font-size: 2rem;
+    margin: 0;
+}
+
+.login p{
+    font-size: 1.2rem;
+    padding-bottom: 2.5rem;
+    margin: 0.5rem 0;
+    border-bottom: 1px dashed var(--secondary-gray);
+
+}
+
+.login p a{
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.logincontainer{
+    width: 70%;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+#loginform{
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+#loginform label{
+    display: block;
+    font-weight: bold;
+    position: left;
+    color: var(--gray);
+    margin: 2rem 0 0.5rem;
+}
+
+#loginform a{
+    color: var(--primary);
+    text-decoration: none;
+    right: 0;
+    display: block;
+    text-align: right;
+    padding-top: 1.5rem;
+    font-weight: normal;
+}
+.buttoncontainer {
+    width: 70%;
+}

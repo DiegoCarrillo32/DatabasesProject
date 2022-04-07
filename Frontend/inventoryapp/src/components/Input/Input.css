@@ -1,0 +1,11 @@
+.textfield{
+    width: 100%;
+    border: 1px solid var(--secondary-gray);
+    border-radius: 5px;
+    height: 2.5rem;
+}
+
+.textfield:focus{
+    outline: 2px solid var(--primary);
+    border: none;
+}
