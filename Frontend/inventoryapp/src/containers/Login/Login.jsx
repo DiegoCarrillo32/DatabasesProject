@@ -1,22 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+// Components
 import { Input } from "../../components/Input/Input";
+import { Button } from "../../components/Button/Button";
+import { useForm } from "../../hooks/useForm";
 import toro from "../../assets/toro.png";
 import "./Login.css";
-import { Link } from "react-router-dom";
-import { Button } from "../../components/Button/Button";
-import { useNavigate } from "react-router-dom";
 export const Login = () => {
   const navigate = useNavigate()
-  const [Form, setForm] = useState({
-    password: "",
-    email: "",
-  });
-  const onChange = ({ target }, name) => {
-    setForm({
-      ...Form,
-      [name]: target.value,
-    });
-  };
+  const [onChange, Form] = useForm({password:"", email:""})
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -56,7 +49,7 @@ export const Login = () => {
           </form>
         </div>
         <div className='buttoncontainer'>
-          <Link to={'/dashboard'}>
+          <Link to={'/register'}>
             <Button
               herarchy={"secondary"}
               title={"Registrar Institución"}

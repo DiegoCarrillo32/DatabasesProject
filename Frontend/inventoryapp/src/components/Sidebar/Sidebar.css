@@ -1,0 +1,7 @@
+.dashboard-aside {
+    height: 100%;
+    width: 250px;
+    background-color: var(--primary-lighter);
+    display: flex;
+    flex-direction: column;
+}

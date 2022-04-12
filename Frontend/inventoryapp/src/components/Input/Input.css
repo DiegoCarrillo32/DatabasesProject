@@ -3,9 +3,17 @@
     border: 1px solid var(--secondary-gray);
     border-radius: 5px;
     height: 2.5rem;
+    padding: 0;
 }
 
 .textfield:focus{
     outline: 2px solid var(--primary);
     border: none;
+}
+.label{
+    display: block;
+    font-weight: bold;
+    position: left;
+    color: var(--gray);
+    margin: 2rem 0 0.5rem;
 }

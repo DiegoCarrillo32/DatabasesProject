@@ -3,7 +3,7 @@ import './Input.css'
 export const Input = ({label, type, onChange}) => {
   return (
       <> 
-        <label>{label}</label>
+        <label className='label'>{label}</label>
         <input className="textfield" type={type} onChange={onChange} ></input>
       </>
   )

@@ -1,0 +1,13 @@
+.dashboard-container {
+    display: flex;
+    height: 100%;
+}
+
+.dashboard-outlet {
+    height: 100%;
+    width: 100%;
+}
+.close {
+    
+    justify-content: flex-end;
+}
