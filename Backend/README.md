@@ -1,3 +1,11 @@
 #Init file for dir to appear in repo;
 SQL server
-Express
+FLASK
+
+BACKEND REQUIREMENTS
+    - FLASK
+    - Flask-SQLAlchemy
+    - Flask-Marshmallow
+    - Marshmallow-sqlalchemy
+    - PyMySQL
+    - Cryptography
