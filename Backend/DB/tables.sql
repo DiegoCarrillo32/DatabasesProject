@@ -1,35 +1,5 @@
--- Create a new database called 'INVENTARIO_IACSA'
--- Connect to the 'master' database to run this snippet
-USE master
-GO
--- Create the new database if it does not exist already
-IF NOT EXISTS (
-	SELECT [name]
-		FROM sys.databases
-		WHERE [name] = N'INVENTARIO_IACSA'
-)
-CREATE DATABASE INVENTARIO_IACSA
-GO
 
-USE INVENTARIO_IACSA
-GO
 
--- Drop the database 'INVENTARIO_IACSA'
--- Connect to the 'master' database to run this snippet
-USE master
-GO
--- Uncomment the ALTER DATABASE statement below to set the database to SINGLE_USER mode if the drop database command fails because the database is in use.
--- ALTER DATABASE INVENTARIO_IACSA SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
--- Drop the database if it exists
-IF EXISTS (
-	SELECT [name]
-		FROM sys.databases
-		WHERE [name] = N'INVENTARIO_IACSA'
-)
-DROP DATABASE INVENTARIO_IACSA
-GO
-
- 
 CREATE TABLE USUARIOS(
 	ID_USUARIO		SMALLINT		NOT NULL,
 	CORREO			VARCHAR(50)		NOT NULL,
