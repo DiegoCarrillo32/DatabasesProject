@@ -10,9 +10,8 @@ def create_user():
     print(request.json)
     correo = request.json['correo']
     area = request.json['area']
-    id = request.json['id_usuario']
     
-    new_user = Usuarios(correo, area, id)
+    new_user = Usuarios(correo, area)
     db.session.add(new_user)
     try:
         db.session.commit()
