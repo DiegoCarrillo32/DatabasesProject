@@ -7,5 +7,5 @@ BACKEND REQUIREMENTS
     - Flask-SQLAlchemy
     - Flask-Marshmallow
     - Marshmallow-sqlalchemy
-    - PyMySQL
+    - PYMSSQL
     - Cryptography
