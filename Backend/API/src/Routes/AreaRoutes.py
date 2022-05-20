@@ -1,4 +1,4 @@
-from flask import Blueprint, make_response, request
+from flask import Blueprint, request
 from sqlalchemy import exc
 from Models.AreaModel import Area
 from Utils.db import db

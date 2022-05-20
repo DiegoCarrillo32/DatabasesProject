@@ -11,9 +11,6 @@ assets = Blueprint('assets', __name__)
 @assets.route('/assets', methods=['GET'])
 def get_assets():
     assets = Activos.query.all()
-    print(assets[0].ubicacion.nombre)
-    print(assets[0].area.nombre)
-    print(assets[0].type[0].descripcion)
     return assets_schema.jsonify(assets)
 
 @assets.route('/create_asset', methods=['POST'])

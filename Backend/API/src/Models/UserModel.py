@@ -4,13 +4,11 @@ class Usuarios(db.Model):
     __tablename__ = "USUARIOS"
     id_usuario = db.Column(db.SmallInteger, primary_key=True)
     correo = db.Column(db.String(70))
-    area = db.Column(db.String(30))
     
-    area = db.relationship("Area", back_populates="user")
+    area = db.relationship("Area", back_populates="user", uselist=False)
     name_user = db.relationship("Nombreusuario", back_populates="user", uselist=False)
-    def __init__(self, correo, area):
+    def __init__(self, correo):
         self.correo = correo
-        self.area = area
 
 class Nombreusuario(db.Model):
     __tablename__ = 'NOMBRE_USUARIO'
