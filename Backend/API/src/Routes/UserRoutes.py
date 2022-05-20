@@ -38,7 +38,7 @@ def create_user():
         db.session.rollback()
         return make_response({
             "msg":"error"
-        })
+        }, 400)
 
 @users.route('/update_user/<id>', methods=['POST'])
 def modify_user(id):
@@ -47,8 +47,18 @@ def modify_user(id):
     area = request.json['area']
     user.correo = correo
     user.area   = area
-    db.session.commit()
-    return user_schema.jsonify(user)
+    try:
+        db.session.commit()
+        return make_response({
+            "msg":"OK"
+        }, 200)
+    except exc.SQLAlchemyError:
+        db.session.rollback()
+        return make_response({
+            "msg":"error"
+        })
+        
+    
 
 @users.route('/get_user/<id>', methods=['GET'])
 def login(id):
@@ -73,9 +83,11 @@ def delete_user(id):
         cursor.close()
         connection.commit()
         
-        return make_response('Eliminado correctamente', 200)
+        return make_response({
+            "msg":"OK"}, 200)
     except exc.SQLAlchemyError:
-        return make_response('ERROR AL ELIMINAR', 500)
+        return make_response({
+            "msg":"ERROR"}, 400)
     
     
 

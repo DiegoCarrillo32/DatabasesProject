@@ -10,6 +10,7 @@ class Area(db.Model):
     encargado = db.Column(db.SmallInteger, db.ForeignKey(Usuarios.id_usuario))
     id_institucion = db.Column(db.SmallInteger)
     user = db.relationship("Usuarios", back_populates="area")
+    activo = db.relationship("Activos", back_populates="area")
     
     def __init__(self, nombre, logo, encargado, id_institucion):
         self.nombre = nombre

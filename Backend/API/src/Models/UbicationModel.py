@@ -1,7 +1,7 @@
 from Utils.db import db
 
 class Ubicacion(db.Model):
-    __tablename__ = 'UBICACION'
+    __tablename__ = 'UBICACIONES'
     id_ubicacion = db.Column(db.SmallInteger, primary_key=True)
     detalle     = db.Column(db.String(50))
     nombre     = db.Column(db.String(50))
