@@ -1,10 +1,20 @@
 from flask import Blueprint, request
 from sqlalchemy import exc
-from Models.AreaModel import Area
 from Utils.db import db
 
+from Models.AreaModel import Area
+#Schemas
+from Schemas.AreaSchema import area_schema, areas_schema
 areas = Blueprint('areas', __name__)
 
+@areas.route('/areas', methods=['GET'])
+def get_areas():
+    try:
+        areas = Area.query.all()
+        return areas_schema.jsonify(areas)
+    except exc.SQLAlchemyError as e:    
+        return {'error': str(e)}, 500
+    
 @areas.route("/create_area", methods=['POST'])
 def create_area():
     nombre = request.json['nombre']

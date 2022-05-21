@@ -82,7 +82,6 @@ def get_users():
     users = Usuarios.query.all()
     user_list = []
     
-    
     for i in users:
         result = Area.query.filter_by(encargado=i.id_usuario).all()
         area_schemass = areas_schema.dump(result)

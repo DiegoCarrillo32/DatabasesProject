@@ -12,6 +12,7 @@ class Activos(db.Model):
     ubicacion = db.relationship("Ubicacion", back_populates="activo")
     area = db.relationship("Area", back_populates="activo")
     type = db.relationship("Tipos", back_populates="asset")
+    loan = db.relationship("Prestamos", back_populates="asset")
     
     def __init__(self, condicion, area_nombre):
         self.condicion = condicion
@@ -31,3 +32,21 @@ class Tipos(db.Model):
         self.descripcion = descripcion
         self.garantia = garantia
         
+class Prestamos(db.Model):
+    __tablename__ = 'PRESTAMOS'
+    id_prestamo = db.Column(db.SmallInteger, primary_key=True)
+    id_activo = db.Column(db.SmallInteger, db.ForeignKey(Activos.id_activo))
+    estado = db.Column(db.String(50))
+    tiempo_pr =  db.Column(db.Date)
+    fecha_so = db.Column(db.Date)
+    fecha_de = db.Column(db.Date)
+    
+    asset = db.relationship(Activos, backref='loan')
+    
+    def __init__(self, id_activo, estado, tiempo_pr, fecha_so, fecha_de):
+        self.id_activo = id_activo
+        self.estado = estado
+        self.tiempo_pr = tiempo_pr
+        self.fecha_so = fecha_so
+        self.fecha_de = fecha_de
+      
