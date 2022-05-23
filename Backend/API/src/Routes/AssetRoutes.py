@@ -21,7 +21,6 @@ def get_asset(id):
 @assets.route('/create_asset', methods=['POST'])
 def create_asset():
     print(request.json)
-    condicion = request.json['condicion']
     area_nombre = request.json['area_nombre']
     placa = request.json['placa']
     descripcion = request.json['descripcion']
@@ -31,7 +30,7 @@ def create_asset():
     
     try:
         cursor = connection.cursor()
-        cursor.callproc('INSERT_ACTIVO', [condicion, area_nombre, placa, descripcion, garantia, id_ubicacion])
+        cursor.callproc('INSERT_ACTIVO', [area_nombre, placa, descripcion, garantia, id_ubicacion])
         cursor.close()
         connection.commit()
         return make_response({

@@ -21,15 +21,20 @@ def create_area():
     logo = request.json['logo']
     encargado = request.json['encargado']
     id_institucion = request.json['id_institucion']
-    area = Area(nombre, logo, encargado, id_institucion)
+    connection = db.engine.raw_connection()
+    
     try:
-        db.session.add(area)
-        db.session.commit()
+        cursor = connection.cursor()
+        cursor.callproc('INSERT_AREA', [nombre, logo, encargado, id_institucion])
+        cursor.close()
+        connection.commit()
         return make_response({
-            "msg":"OK"
+          "msg":"OK"  
         }, 200)
+        
     except exc.SQLAlchemyError:
         db.session.rollback()
         return make_response({
-            "msg":"error"
+            "msg":"ERROR"
         }, 400)
+    

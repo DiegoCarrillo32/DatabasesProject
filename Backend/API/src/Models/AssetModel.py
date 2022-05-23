@@ -6,7 +6,6 @@ class Activos(db.Model):
     __tablename__ = 'ACTIVOS'
     id_activo = db.Column(db.SmallInteger, primary_key=True)
     id_ubicacion = db.Column(db.SmallInteger, db.ForeignKey(Ubicacion.id_ubicacion))
-    condicion = db.Column(db.String(70))
     area_nombre = db.Column(db.String(30), db.ForeignKey(Area.nombre))
     
     ubicacion = db.relationship("Ubicacion", back_populates="activo")
