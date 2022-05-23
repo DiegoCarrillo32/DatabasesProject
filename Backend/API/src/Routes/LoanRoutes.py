@@ -18,7 +18,7 @@ def get_loans():
     except exc.SQLAlchemyError as e:
         return jsonify({"error": str(e)})
     
-@loans.route('/loans/<asset_id>', methods=['GET'])
+@loans.route('/loans/<id>', methods=['GET'])
 def get_loan(id):
     try:
         loan = Prestamos.query.get(id)
@@ -26,20 +26,9 @@ def get_loan(id):
     except exc.SQLAlchemyError as e:
         return jsonify({"error": str(e)})
 
-@loans.route('/loans/<asset_id>', methods=['DELETE'])
-def delete_assets(asset_id):
-    try:
-        loan = Prestamos.query.get(asset_id)
-        db.session.delete(loan)
-        db.session.commit()
-        return make_response({"msg": "OK"}, 200)
-    except exc.SQLAlchemyError as e:
-        db.session.rollback()
-        return jsonify({"error": str(e)})
-
 @loans.route('/create_loan', methods=['POST'])
 def create_loan():
-    asset_id = request.json['id_prestamo']
+    asset_id = request.json['id_activo']
     user_id = request.json['id_usuario']
     status = request.json['estado']
     total_date = request.json['tiempo_pr']
@@ -48,7 +37,7 @@ def create_loan():
     connection = db.engine.raw_connection()
     try:
         cursor = connection.cursor()
-        cursor.callproc('INSERT_PRESTAMO', [asset_id, user_id, status, total_date, date_start, date_end])
+        cursor.callproc('INSERT_PRESTAMOS', [asset_id, user_id, status, total_date, date_start, date_end])
         cursor.close()
         connection.commit()
         return make_response({
@@ -66,11 +55,11 @@ def create_loan():
 
 @loans.route('/delete_loan', methods=['DELETE'])
 def delete_loan():
-    asset_id = request.json['id_prestamo']
+    loan_id = request.json['id_prestamo']
     connection = db.engine.raw_connection()
     try:
         cursor = connection.cursor()
-        cursor.callproc('DELETE_PRESTAMO', [asset_id])
+        cursor.callproc('DELETE_PRESTAMOS', [loan_id])
         cursor.close()
         connection.commit()
         return make_response({
@@ -92,7 +81,7 @@ def update_loan():
     connection = db.engine.raw_connection()
     try:
         cursor = connection.cursor()
-        cursor.callproc('UPDATE_PRESTAMO', [asset_id, status, total_date, date_start, date_end])
+        cursor.callproc('UPDATE_PRESTAMOS', [asset_id, status, total_date, date_start, date_end])
         cursor.close()
         connection.commit()
         return make_response({
