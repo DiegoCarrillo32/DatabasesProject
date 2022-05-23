@@ -26,7 +26,8 @@ button {
     border: 1px solid var(--primary);
 }
 .button-secondary:hover {
-    background-color: rgb(240, 240, 240);
+    color: var(--primary-lighter);
+    border-color: var(--primary-lighter);
     
 }
 

@@ -3,27 +3,29 @@
 .dashboard-aside {
     height: 100%;
     width: 200px;
-    background-color: var(--primary-lighter);
     display: flex;
     flex-direction: column;
     text-align: center;
     position: relative;
+    background-color: rgb(242, 242, 242);
 }
 
 .link{
     text-decoration: none;
-    color: white;
+    color: var(--primary);
     font-size: 18px;
     padding: 10px 0;
 }
 
 .link:hover{
-    background-color: var(--primary);
+    background-color: var(--primary-lighter);
+    color: white;
 }
 
 
 .close{
-    background-color: rgb(161, 57, 57);
+    color: white;
+    background-color: rgb(195, 69, 69);
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -31,5 +33,5 @@
 }
 
 .close:hover{
-    background-color: rgb(192, 78, 78);
+    background-color: rgb(190, 105, 105);
 }
