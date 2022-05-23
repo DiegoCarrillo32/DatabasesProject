@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, make_response
 from sqlalchemy import exc
 from Utils.db import db
 
@@ -25,7 +25,11 @@ def create_area():
     try:
         db.session.add(area)
         db.session.commit()
-        return "AREA AGREGADA"
+        return make_response({
+            "msg":"OK"
+        }, 200)
     except exc.SQLAlchemyError:
         db.session.rollback()
-        return "ERROR AL INSERTAR"
+        return make_response({
+            "msg":"error"
+        }, 400)

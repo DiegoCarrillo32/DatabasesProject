@@ -41,7 +41,7 @@ class Prestamos(db.Model):
     fecha_so = db.Column(db.Date)
     fecha_de = db.Column(db.Date)
     
-    asset = db.relationship(Activos, backref='loan')
+    asset = db.relationship(Activos, back_populates='loan')
     
     def __init__(self, id_activo, estado, tiempo_pr, fecha_so, fecha_de):
         self.id_activo = id_activo
@@ -49,4 +49,3 @@ class Prestamos(db.Model):
         self.tiempo_pr = tiempo_pr
         self.fecha_so = fecha_so
         self.fecha_de = fecha_de
-      

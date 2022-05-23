@@ -79,24 +79,34 @@ def login(id):
     
 @users.route("/get_users", methods=['GET'])
 def get_users():
-    users = Usuarios.query.all()
-    user_list = []
+    try:
+        users = Usuarios.query.all()
+        user_list = []
     
-    for i in users:
-        result = Area.query.filter_by(encargado=i.id_usuario).all()
-        area_schemass = areas_schema.dump(result)
-        user_info = {
-            "name":i.name_user.nombre,
-            "lastname1":i.name_user.apellido1,
-            "lastname2":i.name_user.apellido2,
-            "correo":i.correo,
-            "id_usuario":i.id_usuario,
-            "areas":area_schemass
-        }
-        user_list.append(user_info)
+        for i in users:
+            result = Area.query.filter_by(encargado=i.id_usuario).all()
+            area_schemass = areas_schema.dump(result)
+            user_info = {
+                "name":i.name_user.nombre,
+                "lastname1":i.name_user.apellido1,
+                "lastname2":i.name_user.apellido2,
+                "correo":i.correo,
+                "id_usuario":i.id_usuario,
+                "areas":area_schemass
+            }
+            user_list.append(user_info)
+            
         
-        
-    return make_response(jsonify(user_list), 200)
+        return make_response(jsonify(user_list), 200)
+    except exc.PendingRollbackError:
+        return make_response(
+            {
+                "msg":"error"
+            }, 400
+        )
+            
+        pass
+    
        
 
 @users.route('/delete_user/<id>', methods=['DELETE'])
