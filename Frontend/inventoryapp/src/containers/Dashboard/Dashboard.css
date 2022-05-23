@@ -7,7 +7,26 @@
     height: 100%;
     width: 100%;
 }
-.close {
+
+
+#toggler{
+    width: 50px;
+    height: 50px;
+}
+
+.aside{
+    width: 55px;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+}
+
+.navbar{
+    display: flex;
+}
+
+.navbar label{
+    align-items: center;
+    cursor: pointer;
     
-    justify-content: flex-end;
 }

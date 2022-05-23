@@ -1,7 +1,35 @@
+
+
 .dashboard-aside {
     height: 100%;
-    width: 250px;
+    width: 200px;
     background-color: var(--primary-lighter);
     display: flex;
     flex-direction: column;
+    text-align: center;
+    position: relative;
+}
+
+.link{
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    padding: 10px 0;
+}
+
+.link:hover{
+    background-color: var(--primary);
+}
+
+
+.close{
+    background-color: rgb(161, 57, 57);
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    font-weight: lighter;
+}
+
+.close:hover{
+    background-color: rgb(192, 78, 78);
 }
