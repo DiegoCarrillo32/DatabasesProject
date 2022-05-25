@@ -4,6 +4,7 @@ class Usuarios(db.Model):
     __tablename__ = "USUARIOS"
     id_usuario = db.Column(db.SmallInteger, primary_key=True)
     correo = db.Column(db.String(70))
+    contrasena = db.Column(db.String(20))
     
     area = db.relationship("Area", back_populates="user", uselist=False)
     name_user = db.relationship("Nombreusuario", back_populates="user", uselist=False)

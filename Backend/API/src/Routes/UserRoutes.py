@@ -20,12 +20,13 @@ def create_user():
     nombre    = request.json['nombre']
     apellido1 = request.json['apellido1']
     apellido2 = request.json['apellido2']
+    contrasena = request.json['contrasena']
 
     connection = db.engine.raw_connection()
     
     try:
         cursor = connection.cursor()
-        cursor.callproc('INSERT_USUARIO', [correo, nombre, apellido1, apellido2])
+        cursor.callproc('INSERT_USUARIO', [correo, nombre, apellido1, apellido2, contrasena])
         cursor.close()
         connection.commit()
         return make_response({
@@ -33,6 +34,7 @@ def create_user():
         "lastname1":apellido1,
         "lastname2":apellido2,
         "email":correo,
+        "password":contrasena,
         "message":"Usuario creado con exito"
     }, 200) 
     except exc.SQLAlchemyError:
@@ -48,12 +50,13 @@ def modify_user(id):
     lastname1 = request.json['apellido1']
     lastname2 = request.json['apellido2']
     name = request.json['nombre']
+    contrasena = request.json['contrasena']
     
     connection = db.engine.raw_connection()
     try:
         
         cursor = connection.cursor()
-        cursor.callproc('UPDATE_USUARIO', [id, correo, name, lastname1, lastname2])
+        cursor.callproc('UPDATE_USUARIO', [id, correo, name, lastname1, lastname2, contrasena])
         cursor.close()
         connection.commit()
         

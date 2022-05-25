@@ -20,6 +20,7 @@ def get_assets():
         asset_info = {
             "id_activo": asset.id_activo,
             "area_nombre": asset.area_nombre,
+            "nombre_activo": asset.nombre_activo,
             "id_ubicacion":asset.id_ubicacion,
             "tipo": type,
             "ubicacion": ubi,
@@ -38,6 +39,7 @@ def get_asset(id):
 def create_asset():
     print(request.json)
     area_nombre = request.json['area_nombre']
+    nombre_activo = request.json['nombre_activo']
     placa = request.json['placa']
     descripcion = request.json['descripcion']
     garantia = request.json['garantia']
@@ -46,7 +48,7 @@ def create_asset():
     
     try:
         cursor = connection.cursor()
-        cursor.callproc('INSERT_ACTIVO', [area_nombre, placa, descripcion, garantia, id_ubicacion])
+        cursor.callproc('INSERT_ACTIVO', [area_nombre, nombre_activo ,placa, descripcion, garantia, id_ubicacion])
         cursor.close()
         connection.commit()
         return make_response({
@@ -84,11 +86,13 @@ def update_asset(id):
     placa = request.json['placa']
     descripcion = request.json['descripcion']
     garantia = request.json['garantia']
+    id_ubicacion = request.json['id_ubicacion']
+    nombre_activo = request.json['nombre_activo']
     connection = db.engine.raw_connection()
     
     try:
         cursor = connection.cursor()
-        cursor.callproc('UPDATE_ACTIVO', [id, condicion, area_nombre, placa, descripcion, garantia])
+        cursor.callproc('UPDATE_ACTIVO', [id, condicion, area_nombre, placa, descripcion, garantia, id_ubicacion, nombre_activo])
         cursor.close()
         connection.commit()
         return make_response({

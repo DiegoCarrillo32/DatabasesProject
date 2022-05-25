@@ -1,6 +1,6 @@
 import React,  { useState, useEffect } from 'react'
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, Button, TableCell } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import Modal from '@mui/material/Modal';
 import toast from "react-hot-toast";
 
@@ -26,13 +26,24 @@ export const DashboardAsset = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const [openLoan, setOpenLoan] = useState(false);
+  const handleOpenLoan = () => setOpenLoan(true);
+  const handleCloseLoan = () => setOpenLoan(false);
+
+  const [value, setValue] = useState(null);
+
+  const [onChange, Form] = useForm({ area_nombre: "", placa: "", id_ubicacion: "", descripcion: "", garantia: "", nombre_activo: "" });
+  const [onChangeLoan, FormLoan] = useForm({ area_nombre: "", placa: "", id_ubicacion: "", descripcion: "", garantia: "", nombre_activo: "" });
+
 const columns = [
+  { field: 'nombre_activo', headerName: 'Nombre Activo', width: 200 },
   { field: 'area_nombre', headerName: 'Area Nombre', width: 200 },
   { field: 'id_ubicacion', headerName: 'Ubicacion del activo', width: 200 },
   { field: 'placa', headerName: 'Placa del activo', width: 200 },
   { field: 'descripcion', headerName: 'Desc del activo', width: 200 },
   { field: 'garantia', headerName: 'Garantia del activo', width: 200 },
-  { field: 'set_loan', headerName: 'Crear prestamo activo', width: 200, renderCell: (row) => (<Button onClick={() => { console.log(row['row'].id); }}>Crear prestamo</Button>) },
+  // console.log(row['row'].id);
+  { field: 'set_loan', headerName: 'Crear prestamo activo', width: 200, renderCell: (row) => (<Button onClick={() => { handleOpenLoan() }}>Crear prestamo</Button>) },
 
   {
     field: 'add_activo',
@@ -59,6 +70,7 @@ const columns = [
       const rows = data.map((asset) => {
         return {
           id:asset.id_activo,
+          nombre_activo: asset.nombre_activo,
           area_nombre: asset.area_nombre,
           id_ubicacion: asset.id_ubicacion,
           placa: asset.tipo.placa,
@@ -70,7 +82,7 @@ const columns = [
     })
   }, [])
 
-  const [onChange, Form] = useForm({ area_nombre: "", placa: "", id_ubicacion: "", descripcion: "", garantia: "" });
+  
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(Form);
@@ -87,7 +99,7 @@ const columns = [
   };
 
   return (
-    <>
+    < >
       <div style={{ height: 400, width: '100%' }}>
         <DataGrid
           rows={Assets}
@@ -98,6 +110,20 @@ const columns = [
         />
       </div>
       <Modal
+        open={openLoan}
+        onClose={handleCloseLoan}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <form>
+               <Btn type={"submit"} title={"Agregar"} herarchy={"primary"} />
+          </form>
+        </Box>
+      </Modal>
+
+
+      <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -106,7 +132,14 @@ const columns = [
         <Box sx={style}>
           <form onSubmit={onSubmit}>
             <Input
-                label={"Name de area"}
+                label={"Nombre de activo"}
+                onChange={(e) => {
+                  onChange(e, "nombre_activo");
+                }}
+                type={"text"}
+              />
+            <Input
+                label={"Nombre de area"}
                 onChange={(e) => {
                   onChange(e, "area_nombre");
                 }}

@@ -7,7 +7,7 @@ class Activos(db.Model):
     id_activo = db.Column(db.SmallInteger, primary_key=True)
     id_ubicacion = db.Column(db.SmallInteger, db.ForeignKey(Ubicacion.id_ubicacion))
     area_nombre = db.Column(db.String(30), db.ForeignKey(Area.nombre))
-    
+    nombre_activo = db.Column(db.String(20))
     ubicacion = db.relationship("Ubicacion", back_populates="activo")
     area = db.relationship("Area", back_populates="activo")
     type = db.relationship("Tipos", back_populates="asset")
