@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+
 // Components
 import { Input } from "../../components/Input/Input";
 import { Button } from "../../components/Button/Button";
@@ -10,6 +11,7 @@ import "./Login.css";
 export const Login = () => {
   const navigate = useNavigate()
   const [onChange, Form] = useForm({password:"", email:""})
+
 
   const onSubmit = (e) => {
     e.preventDefault();

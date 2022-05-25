@@ -35,7 +35,7 @@ class Prestamos(db.Model):
     __tablename__ = 'PRESTAMOS'
     id_prestamo = db.Column(db.SmallInteger, primary_key=True)
     id_activo = db.Column(db.SmallInteger, db.ForeignKey(Activos.id_activo))
-    estado = db.Column(db.String(50))
+    estado = db.Column(db.Boolean)
     tiempo_pr =  db.Column(db.Date)
     fecha_so = db.Column(db.Date)
     fecha_de = db.Column(db.Date)

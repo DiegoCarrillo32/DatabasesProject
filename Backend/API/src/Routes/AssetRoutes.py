@@ -1,9 +1,10 @@
-from flask import Blueprint, make_response, request
+from flask import Blueprint, jsonify, make_response, request
 from sqlalchemy import exc
 from Models.AssetModel import Activos
 
 from Schemas.AssetSchema import assets_schema, asset_schema
-
+from Schemas.TypeSchema import type_schema, types_schema
+from Schemas.UbicationSchema import ubication_schema, ubications_schema
 from Utils.db import db
 
 assets = Blueprint('assets', __name__)
@@ -11,7 +12,22 @@ assets = Blueprint('assets', __name__)
 @assets.route('/assets', methods=['GET'])
 def get_assets():
     assets = Activos.query.all()
-    return assets_schema.jsonify(assets)
+    list_of_assets = []
+    for asset in assets:
+        
+        type = type_schema.dump(asset.type[0])
+        ubi = ubication_schema.dump(asset.ubicacion)
+        asset_info = {
+            "id_activo": asset.id_activo,
+            "area_nombre": asset.area_nombre,
+            "id_ubicacion":asset.id_ubicacion,
+            "tipo": type,
+            "ubicacion": ubi,
+            
+        }
+        list_of_assets.append(asset_info)
+    return make_response(jsonify(list_of_assets), 200)
+    
 
 @assets.route('/assets/<id>', methods=['GET'])
 def get_asset(id):

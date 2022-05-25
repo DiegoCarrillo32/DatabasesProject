@@ -1,8 +1,9 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Outlet } from 'react-router-dom'
 import { Sidebar } from '../../components/Sidebar/Sidebar'
 import './Dashboard.css'
 export const Dashboard = () => {
+  const [toggle, setToggle] = useState(false)
   return (
     //Acá lo que tiene que hacer que <Sidebar> por defecto no se renderice, y luego
     //usando un UseState binario renderizar <Sidebar> when #toggler is checked.
@@ -10,9 +11,11 @@ export const Dashboard = () => {
     <div className='dashboard-container'>
       <nav className='navbar'>
         <div className='aside'>
-          <input type="checkbox" name="" id="toggler"/>
+          <input type="checkbox" name="" id="toggler" onChange={()=>{setToggle(!toggle)}}/>
         </div>
-        <Sidebar className='sidebar' id='sidebar'></Sidebar>
+        {
+          toggle ? <Sidebar className='sidebar' id='sidebar'></Sidebar> : null
+        }
       </nav>
 
       

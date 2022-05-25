@@ -9,3 +9,4 @@ BACKEND REQUIREMENTS
     - Marshmallow-sqlalchemy
     - PYMSSQL
     - Cryptography
+    - Flask-cors

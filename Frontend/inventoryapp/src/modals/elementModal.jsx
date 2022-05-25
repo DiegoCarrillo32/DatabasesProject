@@ -5,7 +5,7 @@ import { Input } from "../components/Input/Input";
 import { useForm } from "../hooks/useForm";
 import "./elementModal.css";
 export const Modal = ({ isOpened, mode, onClose }) => {
-  const [onChange, Form] = useForm({ name: "", code: "" });
+  const [onChange, Form] = useForm({ area_nombre: "", placa: "", id_ubicacion: "", descripcion: "", garantia: "" });
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(Form);
@@ -19,16 +19,37 @@ export const Modal = ({ isOpened, mode, onClose }) => {
             </div>
             <h1>Agregar activo</h1>
             <Input
-              label={"Name"}
+              label={"Name de area"}
               onChange={(e) => {
-                onChange(e, "name");
+                onChange(e, "area_nombre");
               }}
               type={"text"}
             />
             <Input
-              label={"Code"}
+              label={"Placa del activo"}
               onChange={(e) => {
-                onChange(e, "code");
+                onChange(e, "placa");
+              }}
+              type={"text"}
+            />
+            <Input
+              label={"Descripcion del activo"}
+              onChange={(e) => {
+                onChange(e, "descripcion");
+              }}
+              type={"text"}
+            />
+            <Input
+              label={"Garantia del activo"}
+              onChange={(e) => {
+                onChange(e, "garantia");
+              }}
+              type={"text"}
+            />
+            <Input
+              label={"Id de ubicacion"}
+              onChange={(e) => {
+                onChange(e, "id_ubicacion");
               }}
               type={"text"}
             />

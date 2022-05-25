@@ -4,11 +4,10 @@ import './Sidebar.css'
 export const Sidebar = () => {
   return (
     <aside className='dashboard-aside'>
-        <Link className='link' to={'/dashboard/profile'}>Perfil</Link>
-        <Link className='link' to={'/dashboard/main'}>Dashboard</Link>
-        <Link className='link' to={'/dashboard/main'}>Préstamos</Link>
-        <Link className='link' to={'/dashboard/main'}>Activos</Link>
-        <Link className='link' to={'/dashboard/main'}>Usuarios</Link>
+        <Link className='link' to={'/dashboard/main'}>Perfil</Link>
+        <Link className='link' to={'/dashboard/users'}>Usuarios</Link>
+        <Link className='link' to={'/dashboard/assets'}>Activos</Link>
+        <Link className='link' to={'/dashboard/loans'}>Préstamos</Link>
         <Link className='close link' to={'/login'}>Cerrar sesion</Link>
     </aside>
   )

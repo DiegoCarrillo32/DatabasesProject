@@ -1,14 +1,29 @@
 import React from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/Button/Button";
 import { Input } from "../../components/Input/Input";
 import { useForm } from "../../hooks/useForm";
 import "./Register.css";
 export const Register = () => {
-  const [onChange, Form] = useForm({name:"", lastname:"", id:"", email:""})
+  const [onChange, Form] = useForm({nombre:"", apellido1:"", apellido2:"", correo:""})
+  const nav = useNavigate()
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(Form);    
+    console.log(Form);   
+    fetch('http://127.0.0.1:5000/create_user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(Form)
+    }).then( () => {
+      toast.success("Registrado correctamente!")
+      nav('/login')
+
+    } )
+    
   };
   
   return (
@@ -23,27 +38,27 @@ export const Register = () => {
           <Input
               label={"Nombre"}
               type={"text"}
-              onChange={(e) => onChange(e, "name")}
+              onChange={(e) => onChange(e, "nombre")}
             />
           
           
           <Input
-              label={"Apellido"}
+              label={"Apellido Paterno"}
               type={"text"}
-              onChange={(e) => onChange(e, "lastname")}
+              onChange={(e) => onChange(e, "apellido1")}
             />
           
           <Input
-              label={"Cédula"}
+              label={"Apellido Materno"}
               type={"text"}
-              onChange={(e) => onChange(e, "id")}
+              onChange={(e) => onChange(e, "apellido2")}
             />
           
           
           <Input
               label={"Correo electronico"}
               type={"email"}
-              onChange={(e) => onChange(e, "email")}
+              onChange={(e) => onChange(e, "correo")}
             />
           
           <Button

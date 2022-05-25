@@ -32,7 +32,8 @@ def create_user():
         "name":nombre,
         "lastname1":apellido1,
         "lastname2":apellido2,
-        "email":correo
+        "email":correo,
+        "message":"Usuario creado con exito"
     }, 200) 
     except exc.SQLAlchemyError:
         db.session.rollback()
