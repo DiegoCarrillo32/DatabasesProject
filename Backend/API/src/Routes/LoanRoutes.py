@@ -31,13 +31,12 @@ def create_loan():
     asset_id = request.json['id_activo']
     user_id = request.json['id_usuario']
     status = request.json['estado']
-    total_date = request.json['tiempo_pr']
     date_start = request.json['fecha_so']
     date_end = request.json['fecha_de']
     connection = db.engine.raw_connection()
     try:
         cursor = connection.cursor()
-        cursor.callproc('INSERT_PRESTAMOS', [asset_id, user_id, status, total_date, date_start, date_end])
+        cursor.callproc('INSERT_PRESTAMOS', [asset_id, user_id, status, date_start, date_end])
         cursor.close()
         connection.commit()
         return make_response({
@@ -75,13 +74,12 @@ def delete_loan():
 def update_loan():
     asset_id = request.json['id_prestamo']
     status = request.json['estado']
-    total_date = request.json['tiempo_pr']
     date_start = request.json['fecha_so']
     date_end = request.json['fecha_de']
     connection = db.engine.raw_connection()
     try:
         cursor = connection.cursor()
-        cursor.callproc('UPDATE_PRESTAMOS', [asset_id, status, total_date, date_start, date_end])
+        cursor.callproc('UPDATE_PRESTAMOS', [asset_id, status, date_start, date_end])
         cursor.close()
         connection.commit()
         return make_response({

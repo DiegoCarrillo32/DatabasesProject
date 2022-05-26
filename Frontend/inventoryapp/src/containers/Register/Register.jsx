@@ -6,11 +6,15 @@ import { Input } from "../../components/Input/Input";
 import { useForm } from "../../hooks/useForm";
 import "./Register.css";
 export const Register = () => {
-  const [onChange, Form] = useForm({nombre:"", apellido1:"", apellido2:"", correo:""})
+  const [onChange, Form] = useForm({nombre:"", apellido1:"", apellido2:"", correo:"", contrasena:""})
   const nav = useNavigate()
 
   const onSubmit = (e) => {
     e.preventDefault();
+    if(Form.contrasena.length < 9) {
+      toast.error("La contraseña debe tener mas de 9 caracteres")
+      return;
+    }
     console.log(Form);   
     fetch('http://127.0.0.1:5000/create_user', {
       method: 'POST',
@@ -41,7 +45,6 @@ export const Register = () => {
               onChange={(e) => onChange(e, "nombre")}
             />
           
-          
           <Input
               label={"Apellido Paterno"}
               type={"text"}
@@ -59,6 +62,12 @@ export const Register = () => {
               label={"Correo electronico"}
               type={"email"}
               onChange={(e) => onChange(e, "correo")}
+            />
+
+          <Input
+              label={"Contraseña"}
+              type={"password"}
+              onChange={(e) => onChange(e, "contrasena")}
             />
           
           <Button

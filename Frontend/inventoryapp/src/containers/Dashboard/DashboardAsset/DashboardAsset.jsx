@@ -3,6 +3,8 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Box, Button, TextField } from "@mui/material";
 import Modal from '@mui/material/Modal';
 import toast from "react-hot-toast";
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css";
 
 import { Input } from "../../../components/Input/Input";
 import { Button as Btn }from "../../../components/Button/Button";
@@ -22,29 +24,66 @@ const style = {
 export const DashboardAsset = () => {
      
   const [Assets, setAssets] = useState([]);
+  const [selectedRow, setSelectedRow] = useState();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [onChange, Form] = useForm({ id_area: "", placa: "", id_ubicacion: "", descripcion: "", garantia: "", nombre_activo: "" });
 
   const [openLoan, setOpenLoan] = useState(false);
-  const handleOpenLoan = () => setOpenLoan(true);
+  const handleOpenLoan = (row) => {
+    setOpenLoan(true)
+    setSelectedRow(row)
+  }
   const handleCloseLoan = () => setOpenLoan(false);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(null);
+  
+  const onChangeDate = (dates) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+  };
+  const onSubmitLoan = (e) => {
+    e.preventDefault()
+    const year = startDate.getFullYear();
+    const month = startDate.getMonth() + 1;
+    const day = startDate.getDate();
+    const startDateMOD = `${year}-${month}-${day}`;
+    const year2 = endDate.getFullYear();
+    const month2 = endDate.getMonth() + 1;
+    const day2 = endDate.getDate();
+    const endDateMOD = `${year2}-${month2}-${day2}`;
+    const user_info = localStorage.getItem('user_info')
+    const user_info_json = JSON.parse(user_info)
+    
+    const data = {
+      id_activo: selectedRow['row'].id,
+      id_usuario: user_info_json.id,
+      estado: 1,
+      fecha_so: startDateMOD,
+      fecha_de: endDateMOD,
 
-  const [value, setValue] = useState(null);
+    }
+    
+    fetch('http://127.0.0.1:5000/create_loan', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(res => res.json())
+      .then(data => {
+        toast.success("Se ha registrado el prestamo");
+        setOpenLoan(false);
+      }
+      )
+      .catch(err => console.log(err))
 
-  const [onChange, Form] = useForm({ area_nombre: "", placa: "", id_ubicacion: "", descripcion: "", garantia: "", nombre_activo: "" });
-  const [onChangeLoan, FormLoan] = useForm({ area_nombre: "", placa: "", id_ubicacion: "", descripcion: "", garantia: "", nombre_activo: "" });
+  }
 
 const columns = [
-  { field: 'nombre_activo', headerName: 'Nombre Activo', width: 200 },
-  { field: 'area_nombre', headerName: 'Area Nombre', width: 200 },
-  { field: 'id_ubicacion', headerName: 'Ubicacion del activo', width: 200 },
-  { field: 'placa', headerName: 'Placa del activo', width: 200 },
-  { field: 'descripcion', headerName: 'Desc del activo', width: 200 },
-  { field: 'garantia', headerName: 'Garantia del activo', width: 200 },
-  // console.log(row['row'].id);
-  { field: 'set_loan', headerName: 'Crear prestamo activo', width: 200, renderCell: (row) => (<Button onClick={() => { handleOpenLoan() }}>Crear prestamo</Button>) },
-
   {
     field: 'add_activo',
     type: 'string',
@@ -61,6 +100,13 @@ const columns = [
         </Button>
     ),
   },
+  { field: 'nombre_activo', headerName: 'Nombre Activo', width: 200 },
+  { field: 'id_area', headerName: 'Area', width: 200 },
+  { field: 'id_ubicacion', headerName: 'Ubicacion del activo', width: 200 },
+  { field: 'placa', headerName: 'Placa del activo', width: 200 },
+  { field: 'descripcion', headerName: 'Desc del activo', width: 200 },
+  { field: 'garantia', headerName: 'Garantia del activo', width: 200 },
+  { field: 'set_loan', headerName: 'Crear prestamo activo', width: 200, renderCell: (row) => (<Button onClick={() => { handleOpenLoan(row) }}>Crear prestamo</Button>) },
 ];
   useEffect(() => {
     fetch('http://127.0.0.1:5000/assets')
@@ -71,8 +117,8 @@ const columns = [
         return {
           id:asset.id_activo,
           nombre_activo: asset.nombre_activo,
-          area_nombre: asset.area_nombre,
-          id_ubicacion: asset.id_ubicacion,
+          id_area: asset.area.nombre,
+          id_ubicacion: asset.ubicacion.nombre,
           placa: asset.tipo.placa,
           descripcion: asset.tipo.descripcion,
           garantia: asset.tipo.garantia,
@@ -85,14 +131,15 @@ const columns = [
   
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(Form);
+    
     fetch('http://127.0.0.1:5000/create_asset', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(Form)
-    }).then( () => {
+    }).then( async (res) => {
+
       handleClose();
       toast.success('Agregado correctamente!')
     })
@@ -116,8 +163,16 @@ const columns = [
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <form>
-               <Btn type={"submit"} title={"Agregar"} herarchy={"primary"} />
+          <form onSubmit={onSubmitLoan}>
+            <DatePicker
+              selected={startDate}
+              onChange={onChangeDate}
+              startDate={startDate}
+              endDate={endDate}
+              selectsRange
+              inline
+            />
+            <Btn type={"submit"} title={"Agregar"} herarchy={"primary"} />
           </form>
         </Box>
       </Modal>
@@ -139,9 +194,9 @@ const columns = [
                 type={"text"}
               />
             <Input
-                label={"Nombre de area"}
+                label={"ID de area"}
                 onChange={(e) => {
-                  onChange(e, "area_nombre");
+                  onChange(e, "id_area");
                 }}
                 type={"text"}
               />
@@ -178,6 +233,7 @@ const columns = [
         
         </Box>
       </Modal>
+      
     </>
     
   )

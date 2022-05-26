@@ -28,7 +28,6 @@ export const DashboardLoan = () => {
     { field: 'estado', headerName: 'Estado', width: 200 },
     { field: 'fecha_de', headerName: 'Fecha de devolucion', width: 200 },
     { field: 'fecha_so', headerName: 'Fecha de solicitud', width: 200 },
-    { field: 'fecha_pr', headerName: 'Fecha de prestamo', width: 200 },
     { field: 'id_activo', headerName: 'ID del activo', width: 200 },
     { field: 'id_prestamo', headerName: 'ID del prestamo', width: 200 },
 
@@ -43,7 +42,6 @@ export const DashboardLoan = () => {
             estado: loan.estado ? 'Prestado' : 'Devuelto',
             fecha_de: loan['fecha_de'],
             fecha_so: loan['fecha_so'],
-            fecha_pr: loan['fecha_pr'],
             id_activo: loan.id_activo,
             id_prestamo: loan.id_prestamo,
            

@@ -8,19 +8,38 @@ import { Button } from "../../components/Button/Button";
 import { useForm } from "../../hooks/useForm";
 import toro from "../../assets/toro.png";
 import "./Login.css";
+import toast from "react-hot-toast";
 export const Login = () => {
   const navigate = useNavigate()
-  const [onChange, Form] = useForm({password:"", email:""})
+  const [onChange, Form] = useForm({contrasena:"", correo:""})
 
 
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(Form);
-    if(Form.email === 'diego@gmail.com' && Form.password === '123') navigate('/dashboard')
-    else {
-      alert('Intruso')
+    fetch('http://127.0.0.1:5000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(Form)
+    }).then( async (res) => {
+      const data = await res.json();
+      if(data.msg === "error"){
+        toast.error("Usuario o contraseña incorrectos")
+      }else{
+
+        toast.success("Iniciaste sesión correctamente!")
+        
+        localStorage.setItem("user_info", JSON.stringify(data))
+        console.log(data);
+        navigate('/dashboard')
+      }
     }
-    
+    ).catch(() => {
+      toast.error("Usuario o contraseña incorrectos")
+    }
+    )
   };
   return (
     <div className='container'>
@@ -35,12 +54,12 @@ export const Login = () => {
             <Input
               label={"Correo electronico"}
               type={"email"}
-              onChange={(e) => onChange(e, "email")}
+              onChange={(e) => onChange(e, "correo")}
             />
             <Input
               label={"Contraseña"}
               type={"password"}
-              onChange={(e) => onChange(e, "password")}
+              onChange={(e) => onChange(e, "contrasena")}
             />
             <Link to={"/dashboard"}>¿Olvidaste tu contraseña?</Link>
             <Button

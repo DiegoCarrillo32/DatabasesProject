@@ -67,7 +67,7 @@ def modify_user(id):
             "msg":"ERROR"}, 400)
     
 @users.route('/get_user/<id>', methods=['GET'])
-def login(id):
+def get_user(id):
     user = Usuarios.query.get(id) 
     result = Area.query.filter_by(encargado=id).all()
     area_schemass = areas_schema.dump(result)
@@ -130,5 +130,27 @@ def delete_user(id):
             "msg":"ERROR"}, 400)
     
     
-
+@users.route('/login', methods=['POST'])
+def login():
+    correo = request.json['correo']
+    contrasena = request.json['contrasena']
+    print(correo)
+    print(contrasena)
+    user = Usuarios.query.filter_by(correo=correo).first()
+    print(user_schema.dump(user))
+    print(user)
+    if user and user.contrasena.strip() == contrasena.strip():
+        return make_response({
+            "id":user.id_usuario,
+            "name":user.name_user.nombre,
+            "lastname1":user.name_user.apellido1,
+            "lastname2":user.name_user.apellido2,
+            "id_institucion":user.area.id_institucion,
+            "email":user.correo,
+            "password":user.contrasena
+        }, 200)
+    else:
+        return make_response({
+            "msg":"error"
+        }, 400)
 

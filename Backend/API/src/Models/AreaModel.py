@@ -5,7 +5,8 @@ from Utils.db import db
 
 class Area(db.Model):
     __tablename__ = 'AREA'
-    nombre = db.Column(db.String(30), primary_key=True)
+    id_area = db.Column(db.SmallInteger, primary_key=True)
+    nombre = db.Column(db.String(30))
     logo = db.Column(db.String(50))
     encargado = db.Column(db.SmallInteger, db.ForeignKey(Usuarios.id_usuario))
     id_institucion = db.Column(db.SmallInteger)

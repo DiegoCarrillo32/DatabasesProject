@@ -8,6 +8,8 @@ export const Sidebar = () => {
         <Link className='link' to={'/dashboard/users'}>Usuarios</Link>
         <Link className='link' to={'/dashboard/assets'}>Activos</Link>
         <Link className='link' to={'/dashboard/loans'}>Préstamos</Link>
+        <Link className='link' to={'/dashboard/areas'}>Areas</Link>
+        <Link className='link' to={'/dashboard/locations'}>Ubicaciones</Link>
         <Link className='close link' to={'/login'}>Cerrar sesion</Link>
     </aside>
   )

@@ -5,6 +5,7 @@ from Models.AssetModel import Activos
 from Schemas.AssetSchema import assets_schema, asset_schema
 from Schemas.TypeSchema import type_schema, types_schema
 from Schemas.UbicationSchema import ubication_schema, ubications_schema
+from Schemas.AreaSchema import area_schema, areas_schema
 from Utils.db import db
 
 assets = Blueprint('assets', __name__)
@@ -17,13 +18,14 @@ def get_assets():
         
         type = type_schema.dump(asset.type[0])
         ubi = ubication_schema.dump(asset.ubicacion)
+        area = area_schema.dump(asset.area)
         asset_info = {
             "id_activo": asset.id_activo,
-            "area_nombre": asset.area_nombre,
             "nombre_activo": asset.nombre_activo,
             "id_ubicacion":asset.id_ubicacion,
             "tipo": type,
             "ubicacion": ubi,
+            "area": area
             
         }
         list_of_assets.append(asset_info)
@@ -38,7 +40,7 @@ def get_asset(id):
 @assets.route('/create_asset', methods=['POST'])
 def create_asset():
     print(request.json)
-    area_nombre = request.json['area_nombre']
+    id_area = request.json['id_area']
     nombre_activo = request.json['nombre_activo']
     placa = request.json['placa']
     descripcion = request.json['descripcion']
@@ -48,7 +50,7 @@ def create_asset():
     
     try:
         cursor = connection.cursor()
-        cursor.callproc('INSERT_ACTIVO', [area_nombre, nombre_activo ,placa, descripcion, garantia, id_ubicacion])
+        cursor.callproc('INSERT_ACTIVO', [id_area, nombre_activo ,placa, descripcion, garantia, id_ubicacion])
         cursor.close()
         connection.commit()
         return make_response({
@@ -82,7 +84,7 @@ def delete_asset(id):
 @assets.route('/update_asset/<id>', methods=['POST'])
 def update_asset(id):
     condicion = request.json['condicion']
-    area_nombre = request.json['area_nombre']
+    id_area = request.json['id_area']
     placa = request.json['placa']
     descripcion = request.json['descripcion']
     garantia = request.json['garantia']
@@ -92,7 +94,7 @@ def update_asset(id):
     
     try:
         cursor = connection.cursor()
-        cursor.callproc('UPDATE_ACTIVO', [id, condicion, area_nombre, placa, descripcion, garantia, id_ubicacion, nombre_activo])
+        cursor.callproc('UPDATE_ACTIVO', [id, condicion, id_area, placa, descripcion, garantia, id_ubicacion, nombre_activo])
         cursor.close()
         connection.commit()
         return make_response({

@@ -7,6 +7,7 @@ from Routes.UserRoutes import users
 from Routes.AssetRoutes import assets
 from Routes.AreaRoutes import areas
 from Routes.LoanRoutes import loans
+from Routes.LocationRoutes import locations
 
 
 app = Flask(__name__)
@@ -21,6 +22,7 @@ app.register_blueprint(users)
 app.register_blueprint(assets)
 app.register_blueprint(areas)
 app.register_blueprint(loans)
+app.register_blueprint(locations)
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
 
