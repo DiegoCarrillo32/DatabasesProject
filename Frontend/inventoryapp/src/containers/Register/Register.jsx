@@ -6,7 +6,7 @@ import { Input } from "../../components/Input/Input";
 import { useForm } from "../../hooks/useForm";
 import "./Register.css";
 export const Register = () => {
-  const [onChange, Form] = useForm({nombre:"", apellido1:"", apellido2:"", correo:"", contrasena:""})
+  const [onChange, Form] = useForm({nombre:"", apellido1:"", apellido2:"", correo:"", contrasena:"", nombre_institucion:"", correo_institucion:""});
   const nav = useNavigate()
 
   const onSubmit = (e) => {
@@ -16,7 +16,7 @@ export const Register = () => {
       return;
     }
     console.log(Form);   
-    fetch('http://127.0.0.1:5000/create_user', {
+    fetch('http://127.0.0.1:5000/create_userinstitution', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -68,6 +68,16 @@ export const Register = () => {
               label={"Contraseña"}
               type={"password"}
               onChange={(e) => onChange(e, "contrasena")}
+            />
+          <Input
+              label={"Nombre de la institucion"}
+              type={"text"}
+              onChange={(e) => onChange(e, "nombre_institucion")}
+            />
+          <Input
+              label={"Correo de la institucion"}
+              type={"text"}
+              onChange={(e) => onChange(e, "correo_institucion")}
             />
           
           <Button

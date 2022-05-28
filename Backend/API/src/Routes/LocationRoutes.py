@@ -30,10 +30,11 @@ def get_location(id):
 def create_location():
     detalle = request.json['detalle']
     nombre = request.json['nombre']
+    id_instiucion = request.json['id_institucion']
     connection = db.engine.raw_connection()
     try:
         cursor = connection.cursor()
-        cursor.callproc('INSERT_UBICACIONES', [detalle, nombre])
+        cursor.callproc('INSERT_UBICACIONES', [detalle, nombre, id_instiucion])
         cursor.close()
         connection.commit()
         return make_response({

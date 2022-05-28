@@ -91,9 +91,12 @@ export const DashboardLocation = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(Form);
+    const user_info = localStorage.getItem('user_info')
+    const user_info_json = JSON.parse(user_info)
     const data = {
       nombre: Form.nombre,
       detalle: Form.detalle,
+      id_institucion: user_info_json.id_institucion
     }
     fetch(`http://127.0.0.1:5000/create_location`, {
       method: 'POST',

@@ -62,12 +62,23 @@ export const DashboardUser = () => {
     const onSubmit = (e) => {
         e.preventDefault();
         console.log(Form);
+        const user_info = localStorage.getItem('user_info')
+        const user_info_json = JSON.parse(user_info)
+        const data = {
+            nombre: Form.nombre,
+            correo: Form.correo,
+            contrasena: Form.contrasena,
+            apellido1: Form.apellido1,
+            apellido2: Form.apellido2,
+            id_institucion: user_info_json.id_institucion
+        }
+        console.log(data);
         fetch('http://127.0.0.1:5000/create_user', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(Form)
+            body: JSON.stringify(data)
         })
 
             .then(res => res.json())

@@ -1,9 +1,9 @@
 
 from flask import Blueprint, jsonify, make_response, request
 from sqlalchemy import exc
-from Models.AreaModel import Area
-
+import uuid
 #MODELOS
+from Models.AreaModel import Area
 from Models.UserModel import Usuarios
 #SCHEMAS
 from Schemas.UsuariosSchema import user_schema, users_schema
@@ -13,20 +13,50 @@ from Schemas.AreaSchema import areas_schema, area_schema
 from Utils.db import db
 
 users = Blueprint('users', __name__)
-
-@users.route('/create_user', methods=['POST'])
-def create_user():
+@users.route('/create_userinstitution', methods=['POST'])
+def create_userinst():
+    id_usuario = str(uuid.uuid1())
     correo    = request.json['correo']
     nombre    = request.json['nombre']
     apellido1 = request.json['apellido1']
     apellido2 = request.json['apellido2']
     contrasena = request.json['contrasena']
+    nombre_institucion = request.json['nombre_institucion']
+    correo_institucion = request.json['correo_institucion']
+    id_institution = str(uuid.uuid1())
+    
+    connection = db.engine.raw_connection()
+    
+    try:
+        cursor = connection.cursor()
+        cursor.callproc('INSERT_USUARIOINSTITUCION', [id_usuario, id_institution, correo, nombre, apellido1, apellido2, contrasena, nombre_institucion, correo_institucion])
+        cursor.close()
+        connection.commit()
+        return make_response({
+            'message': 'Usuario y institucion creado con exito'
+    }, 200) 
+    except exc.SQLAlchemyError:
+        db.session.rollback()
+        return make_response({
+            "msg":"error"
+        }, 400)
+        
+        
+@users.route('/create_user', methods=['POST'])
+def create_user():
+    id_usuario = str(uuid.uuid1())
+    correo    = request.json['correo']
+    nombre    = request.json['nombre']
+    apellido1 = request.json['apellido1']
+    apellido2 = request.json['apellido2']
+    contrasena = request.json['contrasena']
+    id_institucion = request.json['id_institucion']
 
     connection = db.engine.raw_connection()
     
     try:
         cursor = connection.cursor()
-        cursor.callproc('INSERT_USUARIO', [correo, nombre, apellido1, apellido2, contrasena])
+        cursor.callproc('INSERT_USUARIO', [id_usuario, id_institucion, correo, nombre, apellido1, apellido2, contrasena])
         cursor.close()
         connection.commit()
         return make_response({
@@ -145,7 +175,7 @@ def login():
             "name":user.name_user.nombre,
             "lastname1":user.name_user.apellido1,
             "lastname2":user.name_user.apellido2,
-            "id_institucion":user.area.id_institucion,
+            "id_institucion":user.id_institucion,
             "email":user.correo,
             "password":user.contrasena
         }, 200)
