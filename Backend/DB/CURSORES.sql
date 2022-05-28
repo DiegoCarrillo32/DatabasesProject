@@ -11,14 +11,18 @@ AS
     BEGIN 
         IF FECHA_DE < GETDATE()
         BEGIN    
+            PRINT('SE ENCONTRÓ UNA MOROSIDAD EN EL PRESTAMO');
             UPDATE C_A
             SET 
+                
                 [ESTADO_ACTIVO] = "PRESENTA MOROSIDAD",
                 [FECHA_CONTROL] = GETDATE()
         END
     END
 CLOSE CURSOR1 
 DEALLOCATE CURSOR1
+
+
 --Un contador de los prestamos que tiene un area
 GO
 CREATE PROC CURSOR2_ACTIVOS

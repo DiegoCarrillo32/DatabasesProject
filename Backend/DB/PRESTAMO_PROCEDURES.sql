@@ -1,11 +1,11 @@
 USE INVENTARIO_IACSA
 GO
-CREATE PROC INSERT_PRESTAMOS(@id_activo SMALLINT,@solicitante CHAR(40),@estado VARCHAR(50),@fecha_so DATE,@fecha_de DATE)
+CREATE PROC INSERT_PRESTAMOS(@ID_ACTIVO SMALLINT,@SOLICITANTE CHAR(40))
 AS
-    INSERT INTO prestamos(id_activo,estado,fecha_so,fecha_de)VALUES(
-        @id_activo,@estado,@fecha_so,@fecha_de)
+    INSERT INTO prestamos(ID_ACTIVO)VALUES(
+        @ID_ACTIVO)
     --El solicitante va a ser el id del usuario
-    INSERT INTO solicitante(id_usuario) VALUES(@solicitante)
+    INSERT INTO SOLICITANTE(ID_USUARIO) VALUES(@SOLICITANTE)
 GO
 
 CREATE PROC DELETE_PRESTAMOS(@ID_PRESTAMO SMALLINT)
