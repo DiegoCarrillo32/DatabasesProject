@@ -1,6 +1,6 @@
 USE INVENTARIO_IACSA
 GO
-CREATE PROC INSERT_PRESTAMOS(@id_activo SMALLINT,@solicitante SMALLINT,@estado VARCHAR(50),@fecha_so DATE,@fecha_de DATE)
+CREATE PROC INSERT_PRESTAMOS(@id_activo SMALLINT,@solicitante CHAR(40),@estado VARCHAR(50),@fecha_so DATE,@fecha_de DATE)
 AS
     INSERT INTO prestamos(id_activo,estado,fecha_so,fecha_de)VALUES(
         @id_activo,@estado,@fecha_so,@fecha_de)
@@ -20,7 +20,7 @@ AS
  
 GO
 
-CREATE PROCEDURE UPDATE_PRESTAMOS(@id_prestamo SMALLINT,@estado VARCHAR(50),@fecha_so DATE,@fecha_de DATE)
+CREATE PROCEDURE UPDATE_PRESTAMOS(@id_prestamo SMALLINT,@estado BIT,@fecha_so DATE,@fecha_de DATE)
 AS
     UPDATE PRESTAMOS
     SET 
