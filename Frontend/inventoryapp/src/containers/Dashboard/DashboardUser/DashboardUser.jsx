@@ -26,10 +26,35 @@ const style = {
 export const DashboardUser = () => {
 
     const [open, setOpen] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
     const [User, setUser] = useState([]);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const [onChange, Form] = useForm({ nombre: "", correo: "", contrasena:"", apellido1:"", apellido2:""});
+    const [selectedUser, setSelectedUser] = useState({});
+
+    const onChangeEdit = ({ target }, name) => {
+        setSelectedUser({
+        ...selectedUser,
+        [name]: target.value,
+        });
+    };
+
+    const handleOpenEdit = ({row}) => {
+        console.log(row);
+        setSelectedUser({
+            id: row.id,
+            nombre: row.nombre,
+            apellido1: row.apellido1,
+            apellido2: row.apellido2,
+            correo: row.correo,
+            contrasena: row.contrasena,
+        })
+        console.log(Form);
+        setOpenEdit(true)
+    };
+    const handleCloseEdit = () => setOpenEdit(false);
+
+    const [onChange, Form] = useForm({ nombre: "", correo: "", contrasena: "", apellido1: "", apellido2: "" });
 
     const columns = [
         {
@@ -53,10 +78,33 @@ export const DashboardUser = () => {
         { field: 'apellido2', headerName: 'Apellido', width: 200 },
         { field: 'correo', headerName: 'Correo', width: 200 },
         { field: 'id_usuario', headerName: 'Id del usuario', width: 200 },
-        { field: 'delete_ubicacion', headerName: 'Eliminar usuario', width: 200, renderCell: (row) => (<button style={{ background: 'none' }} onClick={() => { }} > <CloseIcon></CloseIcon></button>) },
-        { field: 'edit_ubicacion', headerName: 'Editar usuario', width: 200, renderCell: (row) => (<EditIcon></EditIcon>) },
+        {
+            field: 'delete_user', headerName: 'Eliminar usuario', width: 200, renderCell: (row) => (<button style={{ background: 'none' }} onClick={() => {
+                const user_info = JSON.parse(localStorage.getItem('user_info'))
+                if (row.id.toString() === user_info.id.toString()) {
+                    toast.error("No se puede eliminar su propio usuario")
+                    return;
+                }
+                fetch(`http://127.0.0.1:5000/delete_user/${row.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(res => res.json())
+                    .then(res => {
+                        console.log(res);
+                        toast.success('Usuario eliminado');
+                    }
+                    ).catch(() => {
+                        toast.error("Fallo al eliminar el usuario, posiblemente sea encargado de un area")
+                    })
+            }} > <CloseIcon></CloseIcon></button>)
+        },
+        { field: 'edit_user', headerName: 'Editar usuario', width: 200, renderCell: (row) => ( <button style={{background:'none'}} onClick={ () => handleOpenEdit(row) } >
+            <EditIcon></EditIcon>
 
-
+        </button> ) },
     ];
 
     const onSubmit = (e) => {
@@ -84,7 +132,7 @@ export const DashboardUser = () => {
             .then(res => res.json())
             .then(data => {
                 console.log(data);
-                
+
                 toast.success('Usuario creado');
                 handleClose();
             }
@@ -95,6 +143,40 @@ export const DashboardUser = () => {
             }
             )
     }
+
+    const onSubmitEdit = (e) => {
+        e.preventDefault();
+        
+        const data = {
+            nombre: selectedUser.nombre,
+            correo: selectedUser.correo,
+            contrasena: selectedUser.contrasena,
+            apellido1: selectedUser.apellido1,
+            apellido2: selectedUser.apellido2,
+        }
+        console.log(data);
+        fetch(`http://127.0.0.1:5000/update_user/${selectedUser.id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+
+                toast.success('Usuario editado');
+                handleCloseEdit();
+            }
+            )
+            .catch(err => {
+                toast.error('Error al editar el usuario');
+                handleCloseEdit();
+            }
+            )
+    }
+
 
     useEffect(() => {
         const user_info = localStorage.getItem('user_info')
@@ -117,9 +199,129 @@ export const DashboardUser = () => {
                 setUser(rows);
             }
             )
-
-
     }, [])
+    const addUserModal = () => (
+        <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        >
+            <Box sx={style}>
+                <form onSubmit={onSubmit}>
+                    <Input
+                        label={"Nombre del usuario"}
+                        onChange={(e) => {
+                            onChange(e, "nombre");
+                        }}
+                        type={"text"}
+                    />
+                    <Input
+                        label={"Apellido 1 del usuario"}
+                        onChange={(e) => {
+                            onChange(e, "apellido1");
+                        }}
+                        type={"text"}
+                    />
+                    <Input
+                        label={"Apellido 2 del usuario"}
+                        onChange={(e) => {
+                            onChange(e, "apellido2");
+                        }}
+                        type={"text"}
+                    />
+                    <Input
+                        label={"Correo del usuario"}
+                        onChange={(e) => {
+                            onChange(e, "correo");
+                        }}
+                        type={"text"}
+                    />
+
+                    <Input
+                        label={"Contraseña del usuario"}
+                        onChange={(e) => {
+                            onChange(e, "contrasena");
+                        }}
+                        type={"text"}
+                    />
+
+
+
+                    <Btn type={"submit"} title={"Agregar"} herarchy={"primary"} />
+                </form>
+            </Box>
+        </Modal>
+
+    )
+
+    const editUserModal = () =>
+
+    (
+    
+        <Modal
+            open={openEdit}
+            onClose={handleCloseEdit}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        >
+            <Box sx={style}>
+                <form onSubmit={onSubmitEdit}>
+                    <Input
+                        label={"Nombre del usuario"}
+                        onChange={(e) => {
+                            onChangeEdit(e, "nombre");
+                        }}
+                        value={selectedUser.nombre}
+                        type={"text"}
+                    />
+                    <Input
+                        label={"Apellido 1 del usuario"}
+                        onChange={(e) => {
+                            onChangeEdit(e, "apellido1");
+                        }}
+                        value={selectedUser.apellido1}
+                        type={"text"}
+                    />
+                    <Input
+                        label={"Apellido 2 del usuario"}
+                        onChange={(e) => {
+                            onChangeEdit(e, "apellido2");
+                        }}
+                        value={selectedUser.apellido2}
+                        type={"text"}
+                    />
+                    <Input
+                        label={"Correo del usuario"}
+                        onChange={(e) => {
+                            onChangeEdit(e, "correo");
+                        }}
+                        value={selectedUser.correo}
+                        type={"text"}
+                    />
+
+                    <Input
+                        label={"Contraseña del usuario"}
+                        onChange={(e) => {
+                            onChangeEdit(e, "contrasena");
+                        }}
+                        value={selectedUser.contrasena}
+                        type={"text"}
+                    />
+
+
+
+                    <Btn type={"submit"} title={"Editar usuario"} herarchy={"primary"} />
+                </form>
+            </Box>
+        </Modal>
+
+    )
+
+
+
+
+
 
 
 
@@ -134,57 +336,12 @@ export const DashboardUser = () => {
                     checkboxSelection
                 />
             </div>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}>
-                    <form onSubmit={onSubmit}>
-                        <Input
-                            label={"Nombre del usuario"}
-                            onChange={(e) => {
-                                onChange(e, "nombre");
-                            }}
-                            type={"text"}
-                        />
-                        <Input
-                            label={"Apellido 1 del usuario"}
-                            onChange={(e) => {
-                                onChange(e, "apellido1");
-                            }}
-                            type={"text"}
-                        />
-                        <Input
-                            label={"Apellido 2 del usuario"}
-                            onChange={(e) => {
-                                onChange(e, "apellido2");
-                            }}
-                            type={"text"}
-                        />
-                        <Input
-                            label={"Correo del usuario"}
-                            onChange={(e) => {
-                                onChange(e, "correo");
-                            }}
-                            type={"text"}
-                        />
-                       
-                        <Input
-                            label={"Contraseña del usuario"}
-                            onChange={(e) => {
-                                onChange(e, "contrasena");
-                            }}
-                            type={"text"}
-                        />
-
-
-
-                        <Btn type={"submit"} title={"Agregar"} herarchy={"primary"} />
-                    </form>
-                </Box>
-            </Modal>
+            {
+                addUserModal()
+            }
+            {
+                editUserModal()
+            }
 
 
         </>
