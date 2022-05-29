@@ -2,10 +2,11 @@ import React, {useState, useEffect} from 'react'
 import { DataGrid } from '@mui/x-data-grid';
 import { Box } from "@mui/material";
 import Modal from '@mui/material/Modal';
-
+import CloseIcon from '@mui/icons-material/Close';
 import { Input } from "../../../components/Input/Input";
 import { Button as Btn }from "../../../components/Button/Button";
 import { useForm } from "../../../hooks/useForm";
+import toast from 'react-hot-toast';
 const style = {
     position: 'absolute' ,
     top: '50%',
@@ -21,7 +22,7 @@ export const DashboardLoan = () => {
        
     const [Loans, setLoans] = useState([]);
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
+    
     const handleClose = () => setOpen(false);
   
   const columns = [
@@ -30,6 +31,24 @@ export const DashboardLoan = () => {
     { field: 'fecha_so', headerName: 'Fecha de solicitud', width: 200 },
     { field: 'id_activo', headerName: 'ID del activo', width: 200 },
     { field: 'id_prestamo', headerName: 'ID del prestamo', width: 200 },
+    { field: 'delete_loan', headerName: 'Eliminar prestamo', width: 200, renderCell: (row) => (<button style={{ background: 'none' }} onClick={() => { 
+      fetch(`http://127.0.0.1:5000/delete_loan`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id_prestamo: row.id
+        })
+      })
+      .then(res => res.json())
+      .then(res => {
+        console.log(res);
+        toast.success('Prestamo eliminado');
+       
+      }
+      )
+     }} > <CloseIcon></CloseIcon></button>) },
 
   ];
     useEffect(() => {
@@ -39,7 +58,7 @@ export const DashboardLoan = () => {
       .then(data => {
         const rows = data.map((loan, index) => {
           return {
-            id:index,
+            id:loan.id_prestamo,
             estado: loan.estado ? 'Prestado' : 'Devuelto',
             fecha_de: loan['fecha_de'],
             fecha_so: loan['fecha_so'],

@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, make_response, request
+import pymysql
 from sqlalchemy import exc
 
 #Models
@@ -34,21 +35,15 @@ def get_loan(id):
 def create_loan():
     asset_id = request.json['id_activo']
     user_id = request.json['id_usuario']
-    status = request.json['estado']
-    date_start = request.json['fecha_so']
-    date_end = request.json['fecha_de']
     connection = db.engine.raw_connection()
     try:
         cursor = connection.cursor()
-        cursor.callproc('INSERT_PRESTAMOS', [asset_id, user_id, status, date_start, date_end])
+        cursor.callproc('INSERT_PRESTAMOS', [asset_id, user_id])
         cursor.close()
         connection.commit()
         return make_response({
         "asset_id":asset_id,
         "user_id":user_id,
-        "date_start":date_start,
-        "date_end":date_end,
-        "status":status
     }, 200) 
     except exc.SQLAlchemyError:
         db.session.rollback()

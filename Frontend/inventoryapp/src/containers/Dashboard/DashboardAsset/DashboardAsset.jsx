@@ -7,8 +7,6 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
-import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
 
 import { Input } from "../../../components/Input/Input";
@@ -29,55 +27,32 @@ const style = {
 export const DashboardAsset = () => {
 
   const [Assets, setAssets] = useState([]);
-  const [selectedRow, setSelectedRow] = useState();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [selectedLocation, setSelectedLocation] = useState('');
   const [onChange, Form] = useForm({ id_area: "", placa: "", id_ubicacion: "", descripcion: "", garantia: "", nombre_activo: "" });
 
-  const [openLoan, setOpenLoan] = useState(false);
-  const handleOpenLoan = (row) => {
-    setOpenLoan(true)
-    setSelectedRow(row)
-  }
-  const handleCloseLoan = () => setOpenLoan(false);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(null);
   const [Location, setLocation] = useState([]);
   const [selectedArea, setSelectedArea] = useState('');
   const [Area, setArea] = useState([]);
 
-  const onChangeDate = (dates) => {
-    const [start, end] = dates;
-    setStartDate(start);
-    setEndDate(end);
-  };
+
   const handleChange = (event) => {
     setSelectedLocation(event.target.value);
   };
   const handleChangeArea = (event) => {
     setSelectedArea(event.target.value);
   };
-  const onSubmitLoan = (e) => {
-    e.preventDefault()
-    const year = startDate.getFullYear();
-    const month = startDate.getMonth() + 1;
-    const day = startDate.getDate();
-    const startDateMOD = `${year}-${month}-${day}`;
-    const year2 = endDate.getFullYear();
-    const month2 = endDate.getMonth() + 1;
-    const day2 = endDate.getDate();
-    const endDateMOD = `${year2}-${month2}-${day2}`;
+  const onSubmitLoan = (row) => {
+    
+    
     const user_info = localStorage.getItem('user_info')
     const user_info_json = JSON.parse(user_info)
 
     const data = {
-      id_activo: selectedRow['row'].id,
+      id_activo: row['row'].id,
       id_usuario: user_info_json.id,
-      estado: 1,
-      fecha_so: startDateMOD,
-      fecha_de: endDateMOD,
 
     }
 
@@ -91,10 +66,9 @@ export const DashboardAsset = () => {
       .then(res => res.json())
       .then(data => {
         toast.success("Se ha registrado el prestamo");
-        setOpenLoan(false);
       }
       )
-      .catch(err => console.log(err))
+      .catch(err => toast.error("Error al registrar el prestamo, posiblemente el activo ya esta prestado"));
 
   }
 
@@ -121,7 +95,7 @@ export const DashboardAsset = () => {
     { field: 'placa', headerName: 'Placa del activo', width: 200 },
     { field: 'descripcion', headerName: 'Desc del activo', width: 200 },
     { field: 'garantia', headerName: 'Garantia del activo', width: 200 },
-    { field: 'set_loan', headerName: 'Crear prestamo activo', width: 200, renderCell: (row) => (<Button onClick={() => { handleOpenLoan(row) }}>Crear prestamo</Button>) },
+    { field: 'set_loan', headerName: 'Crear prestamo activo', width: 200, renderCell: (row) => (<Button onClick={() => { onSubmitLoan(row) }}>Crear prestamo</Button>) },
   ];
   useEffect(() => {
     const user_info = localStorage.getItem('user_info')
@@ -149,13 +123,21 @@ export const DashboardAsset = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    const data = {
+      id_area: selectedArea,
+      id_ubicacion: selectedLocation,
+      nombre_activo: Form.nombre_activo,
+      placa: Form.placa,
+      descripcion: Form.descripcion,
+      garantia: Form.garantia,
+    }
 
     fetch(`http://127.0.0.1:5000/create_asset`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(Form)
+      body: JSON.stringify(data)
     }).then(async (res) => {
 
       handleClose();
@@ -199,26 +181,6 @@ export const DashboardAsset = () => {
           checkboxSelection
         />
       </div>
-      <Modal
-        open={openLoan}
-        onClose={handleCloseLoan}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <form onSubmit={onSubmitLoan}>
-            <DatePicker
-              selected={startDate}
-              onChange={onChangeDate}
-              startDate={startDate}
-              endDate={endDate}
-              selectsRange
-              inline
-            />
-            <Btn type={"submit"} title={"Agregar"} herarchy={"primary"} />
-          </form>
-        </Box>
-      </Modal>
 
 
       <Modal

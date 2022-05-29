@@ -13,8 +13,8 @@ assets = Blueprint('assets', __name__)
 
 @assets.route('/assets/<id_ins>', methods=['GET'])
 def get_assets(id_ins):
-    res = db.session.query(Activos).join(Area, Area.id_institucion == id_ins).all() 
-    # assets = Activos.query.all()
+    res = db.session.query(Activos).join(Area, Area.id_area == Activos.id_area).where(Area.id_institucion == id_ins).all() 
+    print(res)
     list_of_assets = []
     for asset in res:
         print(asset.area.id_institucion)
@@ -36,7 +36,7 @@ def get_assets(id_ins):
     return make_response(jsonify(list_of_assets), 200)
     
 
-@assets.route('/assets/<id>', methods=['GET'])
+@assets.route('/asset/<id>', methods=['GET'])
 def get_asset(id):
     asset = Activos.query.get(id)
     return asset_schema.jsonify(asset)
