@@ -97,7 +97,10 @@ export const DashboardUser = () => {
     }
 
     useEffect(() => {
-        fetch('http://127.0.0.1:5000/get_users')
+        const user_info = localStorage.getItem('user_info')
+        const user_info_json = JSON.parse(user_info)
+
+        fetch(`http://127.0.0.1:5000/get_users/${user_info_json.id_institucion}`)
             .then(res => res.json())
             .then(data => {
                 console.log(data);

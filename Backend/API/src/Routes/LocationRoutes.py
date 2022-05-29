@@ -10,10 +10,11 @@ from Utils.db import db
 
 locations = Blueprint('locations', __name__)
 
-@locations.route('/locations', methods=['GET'])
-def get_locations():
+@locations.route('/locations/<id_ins>', methods=['GET'])
+def get_locations(id_ins):
     try:
-        locations = Ubicacion.query.all()
+        locations = Ubicacion.query.filter_by(id_institucion=id_ins).all()
+        # locations = Ubicacion.query.all()
         return ubications_schema.jsonify(locations)
     except exc.SQLAlchemyError as e:
         return jsonify({"error": str(e)})

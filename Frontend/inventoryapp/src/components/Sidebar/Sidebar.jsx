@@ -1,10 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Divider from '@mui/material/Divider';
+
 import './Sidebar.css'
 export const Sidebar = () => {
   return (
     <aside className='dashboard-aside'>
+        <Link className='link' to={'/dashboard'}>Menu principal</Link>
         <Link className='link' to={'/dashboard/main'}>Perfil</Link>
+        <Link className='link' to={'/dashboard/messages'}>Mensajes</Link>
+        <Divider/>
         <Link className='link' to={'/dashboard/users'}>Usuarios</Link>
         <Link className='link' to={'/dashboard/assets'}>Activos</Link>
         <Link className='link' to={'/dashboard/loans'}>Préstamos</Link>

@@ -111,10 +111,11 @@ def get_user(id):
         "areas":area_schemass
     }, 200) 
     
-@users.route("/get_users", methods=['GET'])
-def get_users():
+@users.route("/get_users/<id>", methods=['GET'])
+def get_users(id):
     try:
-        users = Usuarios.query.all()
+        
+        users = Usuarios.query.filter_by(id_institucion=id).all()
         user_list = []
     
         for i in users:
@@ -169,7 +170,7 @@ def login():
     user = Usuarios.query.filter_by(correo=correo).first()
     print(user_schema.dump(user))
     print(user)
-    if user and user.contrasena.strip() == contrasena.strip():
+    if user and (user.contrasena.strip() == contrasena.strip()):
         return make_response({
             "id":user.id_usuario,
             "name":user.name_user.nombre,

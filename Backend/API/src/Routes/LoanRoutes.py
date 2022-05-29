@@ -3,6 +3,7 @@ from sqlalchemy import exc
 
 #Models
 from Models.AssetModel import Prestamos
+from Models.AreaModel import Area
 #Schemas
 from Schemas.LoanSchema import loan_schema, loans_schema
 #Utils
@@ -10,11 +11,14 @@ from Utils.db import db
 
 loans = Blueprint('loans', __name__)
 
-@loans.route('/loans', methods=['GET'])
-def get_loans():
+@loans.route('/loans/<id_ins>', methods=['GET'])
+def get_loans(id_ins):
     try:
-        loans = Prestamos.query.all()
-        return loans_schema.jsonify(loans)
+        # do an inner join with sql alchemy
+        res = db.session.query(Prestamos).join(Area, Area.id_institucion == id_ins).all() 
+        print(res)
+        # loans = Prestamos.query.all()
+        return loans_schema.jsonify(res)
     except exc.SQLAlchemyError as e:
         return jsonify({"error": str(e)})
     

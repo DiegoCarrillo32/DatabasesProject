@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, make_response, request
 from sqlalchemy import exc
 from Models.AssetModel import Activos
+from Models.AreaModel import Area
 
 from Schemas.AssetSchema import assets_schema, asset_schema
 from Schemas.TypeSchema import type_schema, types_schema
@@ -10,25 +11,28 @@ from Utils.db import db
 
 assets = Blueprint('assets', __name__)
 
-@assets.route('/assets', methods=['GET'])
-def get_assets():
-    assets = Activos.query.all()
+@assets.route('/assets/<id_ins>', methods=['GET'])
+def get_assets(id_ins):
+    res = db.session.query(Activos).join(Area, Area.id_institucion == id_ins).all() 
+    # assets = Activos.query.all()
     list_of_assets = []
-    for asset in assets:
-        
+    for asset in res:
+        print(asset.area.id_institucion)
+        print(id_ins)
         type = type_schema.dump(asset.type[0])
         ubi = ubication_schema.dump(asset.ubicacion)
-        area = area_schema.dump(asset.area)
+        areas = area_schema.dump(asset.area)
         asset_info = {
             "id_activo": asset.id_activo,
             "nombre_activo": asset.nombre_activo,
             "id_ubicacion":asset.id_ubicacion,
             "tipo": type,
             "ubicacion": ubi,
-            "area": area
-            
+            "area": areas
+                
         }
         list_of_assets.append(asset_info)
+
     return make_response(jsonify(list_of_assets), 200)
     
 

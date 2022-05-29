@@ -119,7 +119,9 @@ export const DashboardLocation = () => {
       .catch(err => toast.error("Error al crear la ubicacion"));
   }
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/locations')
+    const user_info = localStorage.getItem('user_info')
+    const user_info_json = JSON.parse(user_info)
+    fetch(`http://127.0.0.1:5000/locations/${user_info_json.id_institucion}`)
       .then(res => res.json())
       .then(data => {
         console.log(data);

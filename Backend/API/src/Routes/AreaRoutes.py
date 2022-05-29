@@ -9,11 +9,12 @@ from Schemas.UsuariosSchema import user_schema, users_schema
 from Schemas.NameUserSchema import nameuser_schema
 areas = Blueprint('areas', __name__)
 
-@areas.route('/areas', methods=['GET'])
-def get_areas():
+@areas.route('/areas/<id_ins>', methods=['GET'])
+def get_areas(id_ins):
     try:
         areas_list = []
-        areas = Area.query.all()
+        areas = Area.query.filter_by(id_institucion=id_ins).all()
+        # areas = Area.query.all()
         for i in areas:
             user = nameuser_schema.dump(i.user.name_user)
             print(user)

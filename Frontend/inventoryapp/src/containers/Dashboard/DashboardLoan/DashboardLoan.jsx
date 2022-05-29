@@ -33,7 +33,8 @@ export const DashboardLoan = () => {
 
   ];
     useEffect(() => {
-      fetch('http://127.0.0.1:5000/loans')
+      const user = JSON.parse(localStorage.getItem('user_info'));
+      fetch(`http://127.0.0.1:5000/loans/${user.id_institucion}`)
       .then(res => res.json())
       .then(data => {
         const rows = data.map((loan, index) => {

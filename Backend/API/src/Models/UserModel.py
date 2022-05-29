@@ -1,3 +1,4 @@
+# from Models.MessageModel import Mensaje
 from Utils.db import db
 
 class Institucion(db.Model):
@@ -11,6 +12,8 @@ class Institucion(db.Model):
         self.id_institucion = id_institucion
         self.nombre = nombre
         self.detalle = detalle
+        
+
 class Usuarios(db.Model):
     __tablename__ = "USUARIOS"
     id_usuario = db.Column(db.String(40), primary_key=True)
@@ -18,9 +21,12 @@ class Usuarios(db.Model):
     contrasena = db.Column(db.String(20))
     id_institucion = db.Column(db.String(40), db.ForeignKey(Institucion.id_institucion))
     
+    
     institucion = db.relationship("Institucion", back_populates="usuarios")
+    
     area = db.relationship("Area", back_populates="user", uselist=False)
     name_user = db.relationship("Nombreusuario", back_populates="user", uselist=False)
+    
     def __init__(self, correo, id_institucion, contrasena, id_usuario):
         self.correo = correo
         self.id_institucion = id_institucion
