@@ -5,6 +5,7 @@ from sqlalchemy import exc
 #Models
 from Models.AssetModel import Prestamos
 from Models.AreaModel import Area
+from Models.AssetModel import Activos
 #Schemas
 from Schemas.LoanSchema import loan_schema, loans_schema
 #Utils
@@ -16,7 +17,7 @@ loans = Blueprint('loans', __name__)
 def get_loans(id_ins):
     try:
         # do an inner join with sql alchemy
-        res = db.session.query(Prestamos).join(Area, Area.id_institucion == id_ins).all() 
+        res = db.session.query(Prestamos).join(Activos, Activos.id_activo == Prestamos.id_activo).join(Area, Area.id_area == Activos.id_area).filter(Area.id_institucion == id_ins).all()
         print(res)
         # loans = Prestamos.query.all()
         return loans_schema.jsonify(res)
