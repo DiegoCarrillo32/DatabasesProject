@@ -60,7 +60,7 @@ export const DashboardMain = () => {
             color: 'inherit'
 
           }} >
-            <Card sx={{ m:5, width:300, height:300}}>
+            <Card  sx={{ m:5, width:300, height:300}}>
               <CardContent style={{
                 display: 'flex',
                 flexDirection: 'column',
