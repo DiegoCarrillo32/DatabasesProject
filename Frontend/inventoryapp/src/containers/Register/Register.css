@@ -20,7 +20,7 @@
 .right{
     width: 40%;
     /* height: 100%; */
-    background-image: url(https://scontent.fsjo8-1.fna.fbcdn.net/v/t39.30808-6/275150495_2252805088218327_4377818067655000028_n.jpg?_nc_cat=108&ccb=1-5&_nc_sid=0debeb&_nc_ohc=7nJHCgAcDoUAX8QGQ2R&_nc_ht=scontent.fsjo8-1.fna&oh=00_AT-iTbd_AlyFwj9heIXuqw7wdlf1AHV7oYsw7tmgyjsfdg&oe=6257595A);
+    background-image: url(/src/assets/auditorio.jpg);
     background-position: center;
     filter: grayscale(100%) opacity(90%);
 }

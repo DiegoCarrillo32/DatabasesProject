@@ -47,38 +47,40 @@ const routes = [
 export const DashboardMain = () => {
 
   return (
-    <div style={{
-      display: 'flex',
-      flexWrap: 'wrap',
-    }}>
+      <div style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        padding: 0,
+      }}>
 
-      
-      {
-        routes.map((route) => (
-          <Link to={`${route.route}`} style={{
-            textDecoration: 'none',
-            color: 'inherit'
+        
+        {
+          routes.map((route) => (
+            <Link to={`${route.route}`} style={{
+              textDecoration: 'none',
+              color: 'inherit'
 
-          }} >
-            <Card  sx={{ m:5, width:300, height:300}}>
-              <CardContent style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent:'center' ,
-                alignItems:'center', 
-                height: '100%'
-              }}>
-                {route.icon()}
-                <Typography sx={{ fontSize: 28 }} color="text.secondary">
-                  {route.name}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Link>
+            }} >
+                <Card class='card' sx={{ m:5, width:300, height:300, }}>
+                  <CardContent style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent:'center' ,
+                    alignItems:'center', 
+                    height: '100%'
+                  }}>
+                    {route.icon()}
+                    <Typography sx={{ fontSize: 28 }} color="text.secondary">
+                      {route.name}
+                    </Typography>
+                  </CardContent>
+                </Card>
+            </Link>
 
-        ))
-      }
+          ))
+        }
 
-    </div>
+      </div>
+    
   );
 };
